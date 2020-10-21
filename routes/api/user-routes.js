@@ -48,16 +48,17 @@ router.post("/", (req, res) => {
     });
 });
 
-// put /api/users/1
-router.post("/:id", (req, res) => {
+router.put("/:id", (req, res) => {
+  // pass in req.body instead to only update what's passed through
   User.update(req.body, {
+    individualHooks: true,
     where: {
       id: req.params.id,
     },
   })
     .then((dbUserData) => {
       if (!dbUserData[0]) {
-        res.status(404).json({ message: "No user found with this ID" });
+        res.status(404).json({ message: "No user found with this id" });
         return;
       }
       res.json(dbUserData);
