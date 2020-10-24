@@ -1,8 +1,7 @@
 const Sequelize = require("sequelize");
-// holds creds
+
 require("dotenv").config();
 
-// establishes connection to db
 let sequelize;
 
 if (process.env.JAWSDB_URL) {
@@ -19,3 +18,5 @@ if (process.env.JAWSDB_URL) {
     }
   );
 }
+
+module.exports = sequelize;

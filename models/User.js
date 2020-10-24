@@ -1,19 +1,18 @@
 const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../config/connection");
 const bcrypt = require("bcrypt");
+const sequelize = require("../config/connection");
 
-// creates user model
+// create our User model
 class User extends Model {
-  // adds an instance method to compare passwords
+  // set up method to run on instance data (per user) to check password
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
 }
 
-// two paramters. One containing all column objects, the other contains database params
+// create fields/columns for User model
 User.init(
   {
-    // define id column type uses imported datatypes and defines integer. Cannot be null. Is primary key. AI on
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -24,7 +23,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // makes sure all entries are unique and email is in a valid format
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -36,7 +34,6 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      // minimum pass length
       validate: {
         len: [4],
       },
@@ -44,8 +41,7 @@ User.init(
   },
   {
     hooks: {
-      // sets up beforeCreate lifestyle "hook" functionality
-      // declare function as async before being able to use await
+      // set up beforeCreate lifecycle "hook" functionality
       async beforeCreate(newUserData) {
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
         return newUserData;
