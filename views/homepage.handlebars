@@ -1,0 +1,9 @@
+{{!-- loops through each post in post table then displays url, title, votecount, username, created at and comments --}}
+
+<ol class="post-list">
+  {{#each posts as |post|}}
+  <li>
+    {{>post-info post}}
+  </li>
+  {{/each}}
+</ol>
